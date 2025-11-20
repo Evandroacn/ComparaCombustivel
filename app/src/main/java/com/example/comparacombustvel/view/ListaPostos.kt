@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.comparacombustvel.datasource.PostoRepository
 import com.example.comparacombustvel.model.Posto
+import androidx.compose.ui.res.stringResource
+import com.example.comparacombustvel.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,10 +37,10 @@ fun ListaPostos(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Postos Salvos") },
+                title = { Text(stringResource(R.string.title_saved_stations)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.btn_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -54,7 +56,7 @@ fun ListaPostos(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
-                Icon(Icons.Filled.Add, "Adicionar Posto")
+                Icon(Icons.Filled.Add, stringResource(R.string.title_add_station))
             }
         },
         floatingActionButtonPosition = FabPosition.End
@@ -67,7 +69,7 @@ fun ListaPostos(
             if (postosList.isEmpty()) {
                 item {
                     Text(
-                        text = "Nenhum posto salvo ainda. Clique no botão + para adicionar um posto.",
+                        text = stringResource(R.string.empty_list_msg),
                         modifier = Modifier.padding(16.dp),
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -92,10 +94,14 @@ fun PostoCard(posto: Posto, onClick: () -> Unit) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(posto.nome, fontWeight = FontWeight.Bold, fontSize = 18.sp)
             Spacer(modifier = Modifier.height(4.dp))
-            Text("Álcool: R$ ${posto.precoAlcool}")
-            Text("Gasolina: R$ ${posto.precoGasolina}")
+            Text(stringResource(R.string.detail_alcohol, posto.precoAlcool))
+            Text(stringResource(R.string.detail_gasoline, posto.precoGasolina))
             Spacer(modifier = Modifier.height(8.dp))
-            Text("Cadastrado em: ${posto.dataFormatada()}", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+            Text(
+                stringResource(R.string.detail_date, posto.dataFormatada()),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.outline
+            )
         }
     }
 }

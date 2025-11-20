@@ -1,3 +1,56 @@
 <resources>
     <string name="app_name">Compara Combustível</string>
+
+    <string name="home_title">Álcool ou Gasolina?</string>
+    <string name="welcome_message">Bem-vindo(a) ao Compara Combustível</string>
+    <string name="btn_check_profitability">Verificar Rentabilidade</string>
+    <string name="btn_view_saved">Visualizar Postos Salvos</string>
+    <string name="desc_image_home">Mascote do app</string>
+
+    <string name="btn_back">Voltar</string>
+    <string name="btn_ok">Ok</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_save">Salvar</string>
+    <string name="btn_calculate">Calcular</string>
+    <string name="btn_delete">Excluir</string>
+    <string name="btn_edit">Editar</string>
+    <string name="btn_open_map">Abrir Mapa</string>
+    <string name="title_saved_stations">Postos Salvos</string>
+    <string name="title_add_station">Adicionar Posto</string>
+    <string name="title_edit_station">Editar Posto</string>
+    <string name="title_details">Detalhes do Posto</string>
+
+    <string name="label_alcohol_price">Preço do Álcool (R$)</string>
+    <string name="label_gasoline_price">Preço da Gasolina (R$)</string>
+    <string name="label_station_name">Posto (Opcional para cálculo)</string>
+    <string name="label_percentage_info">Informe a porcentagem do seu veículo</string>
+    <string name="btn_save_changes">Salvar Alterações</string>
+    <string name="btn_add_station">Adicionar Posto</string>
+    <string name="dialog_result_title">Resultado da Verificação da Rentabilidade</string>
+
+    <string name="error_required_field">Campo obrigatório</string>
+    <string name="error_invalid_number">Valor inválido. Use apenas números.</string>
+    <string name="msg_save_success">Posto salvo com sucesso!</string>
+    <string name="msg_save_error">Erro ao salvar: %s</string>
+
+    <string name="detail_name">Nome: %s</string>
+    <string name="detail_alcohol">Álcool: R$ %s</string>
+    <string name="detail_gasoline">Gasolina: R$ %s</string>
+    <string name="detail_location">Localização: %s</string>
+    <string name="detail_location_unknown">Não informada</string>
+    <string name="detail_date">Cadastrado em: %s</string>
+    <string name="detail_percentage">Percentual Usado: %s%%</string>
+    <string name="detail_profitability">Rentabilidade: %s</string>
+    <string name="dialog_delete_title">Confirmar Exclusão</string>
+    <string name="dialog_delete_msg">Tem certeza que deseja excluir o posto \'%s\'?</string>
+    <string name="error_id_missing">Erro: ID do posto não fornecido.</string>
+    <string name="error_data_load">Erro ao carregar dados.</string>
+    <string name="calculating">Calculando...</string>
+
+    <string name="empty_list_msg">Nenhum posto salvo ainda. Clique no botão + para adicionar um posto.</string>
+
+    <string name="calc_gas_better_station">A Gasolina é mais rentável no posto %s</string>
+    <string name="calc_alcohol_better_station">O Álcool é mais rentável no posto %s</string>
+    <string name="calc_gas_better">A Gasolina é mais rentável</string>
+    <string name="calc_alcohol_better">O Álcool é mais rentável</string>
 </resources>

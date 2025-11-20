@@ -56,6 +56,8 @@ import com.example.comparacombustvel.datasource.PostoRepository
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import androidx.compose.ui.res.stringResource
+import com.example.comparacombustvel.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,10 +120,10 @@ fun Rentavel(
 
         // Valida Alcool
         if (alcool.isBlank()) {
-            alcoolError = "Campo obrigatório"
+            alcoolError = context.getString(R.string.error_required_field)
             hasError = true
         } else if (alcoolVal == null) {
-            alcoolError = "Valor inválido. Use apenas números."
+            alcoolError = context.getString(R.string.error_invalid_number)
             hasError = true
         } else {
             alcoolError = null
@@ -129,10 +131,10 @@ fun Rentavel(
 
         // Valida Gasolina
         if (gasolina.isBlank()) {
-            gasolinaError = "Campo obrigatório"
+            gasolinaError = context.getString(R.string.error_required_field)
             hasError = true
         } else if (gasolinaVal == null) {
-            gasolinaError = "Valor inválido. Use apenas números."
+            gasolinaError = context.getString(R.string.error_invalid_number)
             hasError = true
         } else {
             gasolinaError = null
@@ -160,10 +162,12 @@ fun Rentavel(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (isEditing) "Editar Posto" else "Adicionar Posto") },
+                title = {
+                    Text(if (isEditing) stringResource(R.string.title_edit_station) else stringResource(R.string.title_add_station))
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.btn_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -184,7 +188,7 @@ fun Rentavel(
             OutlinedTextField(
                 value = alcool,
                 onValueChange = { if (it.length <= 4) alcool = it },
-                label = { Text(text = "Preço do Álcool (R$)") },
+                label = { Text(stringResource(R.string.label_alcohol_price)) },
                 modifier = Modifier.fillMaxWidth().padding(20.dp, 30.dp, 20.dp, 5.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 isError = alcoolError != null
@@ -202,7 +206,7 @@ fun Rentavel(
             OutlinedTextField(
                 value = gasolina,
                 onValueChange = { if (it.length <= 4) gasolina = it },
-                label = { Text(text = "Preço da Gasolina (R$)") },
+                label = { Text(text = stringResource(R.string.label_gasoline_price)) },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 5.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 isError = gasolinaError != null
@@ -220,7 +224,7 @@ fun Rentavel(
             OutlinedTextField(
                 value = posto,
                 onValueChange = { posto = it },
-                label = { Text(text = "Posto (Opcional para calculo)") },
+                label = { Text(text = stringResource(R.string.label_station_name)) },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp),
                 isError = postoError != null
             )
@@ -235,7 +239,7 @@ fun Rentavel(
             }
 
             Text(
-                text = "Informe a porcentagem do seu veículo",
+                text = stringResource(R.string.label_percentage_info),
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 18.sp,
                 modifier = Modifier.padding(20.dp, 10.dp, 20.dp, 3.dp)
@@ -281,6 +285,7 @@ fun Rentavel(
                         val gasolinaVal = gasolina.replace(",", ".").toDouble()
 
                         val result = Calculations.calculate(
+                            context = context,
                             alcool = alcoolVal,
                             gasolina = gasolinaVal,
                             posto = posto,
@@ -294,7 +299,7 @@ fun Rentavel(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp).height(70.dp)
             ) {
                 Text(
-                    "Calcular",
+                    text = stringResource(R.string.btn_calculate),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -310,7 +315,7 @@ fun Rentavel(
                     // 2. Valida o Posto
                     var isPostoValid = true
                     if (posto.isBlank()) {
-                        postoError = "Campo obrigatório"
+                        postoError = context.getString(R.string.error_required_field)
                         isPostoValid = false
                     } else {
                         postoError = null
@@ -318,6 +323,7 @@ fun Rentavel(
 
                     if (isAlcoolGasolinaValid && isPostoValid) {
                         PostoManager.savePosto(
+                            context = context,
                             alcool = alcool,
                             gasolina = gasolina,
                             posto = posto,
@@ -342,7 +348,7 @@ fun Rentavel(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp).height(70.dp)
             ) {
                 Text(
-                    text = if (isEditing) "Salvar Alterações" else "Adicionar Posto",
+                    text = if (isEditing) stringResource(R.string.btn_save_changes) else stringResource(R.string.btn_add_station),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -351,7 +357,7 @@ fun Rentavel(
             if (showRentabilidade) {
                 AlertDialog(
                     onDismissRequest = { showRentabilidade = false },
-                    title = { Text("Resultado da Verificação da Rentabilidade") },
+                    title = { Text(stringResource(R.string.dialog_result_title)) },
                     text = { Text(textResultCalculo) },
                     confirmButton = {
                         Row(
@@ -362,7 +368,7 @@ fun Rentavel(
                                 onClick = { showRentabilidade = false },
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Ok")
+                                Text(stringResource(R.string.btn_ok))
                             }
                         }
                     },

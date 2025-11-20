@@ -1,6 +1,8 @@
 package com.example.comparacombustvel.datasource
 
 import com.example.comparacombustvel.model.Posto
+import com.example.comparacombustvel.R
+import android.content.Context
 import java.util.Date
 import java.util.UUID
 
@@ -8,6 +10,7 @@ object PostoManager {
 
     fun savePosto(
         // 1. Dados que vêm da UI
+        context: Context,
         alcool: String,
         gasolina: String,
         posto: String,
@@ -50,9 +53,9 @@ object PostoManager {
             } else {
                 repository.addPosto(postoParaSalvar)
             }
-            onResult(true, "Posto salvo com sucesso!")
+            onResult(true, context.getString(R.string.msg_save_success))
         } catch (e: Exception) {
-            onResult(false, "Erro ao salvar: ${e.message}")
+            onResult(false, context.getString(R.string.msg_save_error, e.message))
         }
     }
 }

@@ -25,6 +25,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import com.example.comparacombustvel.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,7 +37,7 @@ fun Home(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Alcool ou Gasolina?") },
+                title = { Text(text = stringResource(R.string.home_title)) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -52,12 +53,12 @@ fun Home(
 
             Image(
                 painter = painterResource(id = R.drawable.falloutguy),
-                contentDescription = "Fallout Guy",
+                contentDescription = stringResource(R.string.desc_image_home),
                 modifier = Modifier.size(200.dp)
             )
 
             Text(
-                text = "Bem-vindo(a) ao Compara Combustível",
+                text = stringResource(R.string.welcome_message),
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 32.sp,
                 lineHeight = 40.sp,
@@ -70,7 +71,7 @@ fun Home(
                 modifier = Modifier.fillMaxWidth().padding(20.dp, 20.dp, 20.dp, 10.dp).height(70.dp)
             ) {
                 Text(
-                    text = "Verificar Rentabilidade",
+                    text = stringResource(R.string.btn_check_profitability),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -81,7 +82,7 @@ fun Home(
                 modifier = Modifier.fillMaxWidth().padding(20.dp, 10.dp, 20.dp, 20.dp).height(70.dp),
             ) {
                 Text(
-                    text = "Visualizar Postos Salvos",
+                    text = stringResource(R.string.btn_view_saved),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )

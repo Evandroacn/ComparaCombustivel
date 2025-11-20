@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Fuel Compare</string>
+
+    <string name="home_title">Alcohol or Gasoline?</string>
+    <string name="welcome_message">Welcome to Fuel Compare</string>
+    <string name="btn_check_profitability">Check Profitability</string>
+    <string name="btn_view_saved">View Saved Stations</string>
+    <string name="desc_image_home">App Mascot</string>
+
+    <string name="btn_back">Back</string>
+    <string name="btn_ok">Ok</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_calculate">Calculate</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_open_map">Open Map</string>
+    <string name="title_saved_stations">Saved Stations</string>
+    <string name="title_add_station">Add Station</string>
+    <string name="title_edit_station">Edit Station</string>
+    <string name="title_details">Station Details</string>
+
+    <string name="label_alcohol_price">Alcohol Price (R$)</string>
+    <string name="label_gasoline_price">Gasoline Price (R$)</string>
+    <string name="label_station_name">Station Name (Optional for calc)</string>
+    <string name="label_percentage_info">Select your vehicle percentage</string>
+    <string name="btn_save_changes">Save Changes</string>
+    <string name="btn_add_station">Add Station</string>
+    <string name="dialog_result_title">Profitability Check Result</string>
+
+    <string name="error_required_field">Required field</string>
+    <string name="error_invalid_number">Invalid value. Use numbers only.</string>
+    <string name="msg_save_success">Station saved successfully!</string>
+    <string name="msg_save_error">Error saving: %s</string>
+
+    <string name="detail_name">Name: %s</string>
+    <string name="detail_alcohol">Alcohol: R$ %s</string>
+    <string name="detail_gasoline">Gasoline: R$ %s</string>
+    <string name="detail_location">Location: %s</string>
+    <string name="detail_location_unknown">Not informed</string>
+    <string name="detail_date">Registered on: %s</string>
+    <string name="detail_percentage">Percentage Used: %s%%</string>
+    <string name="detail_profitability">Profitability: %s</string>
+    <string name="dialog_delete_title">Confirm Deletion</string>
+    <string name="dialog_delete_msg">Are you sure you want to delete station \'%s\'?</string>
+    <string name="error_id_missing">Error: Station ID not provided.</string>
+    <string name="error_data_load">Error loading data.</string>
+    <string name="calculating">Calculating...</string>
+
+    <string name="empty_list_msg">No stations saved yet. Click the + button to add one.</string>
+
+    <string name="calc_gas_better_station">Gasoline is more profitable at %s</string>
+    <string name="calc_alcohol_better_station">Alcohol is more profitable at %s</string>
+    <string name="calc_gas_better">Gasoline is more profitable</string>
+    <string name="calc_alcohol_better">Alcohol is more profitable</string>
+</resources>
