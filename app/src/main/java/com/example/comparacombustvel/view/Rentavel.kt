@@ -1,6 +1,9 @@
 package com.example.comparacombustvel.view
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +21,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,15 +45,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.navigation.NavController
 import com.example.comparacombustvel.datasource.Calculations
 import com.example.comparacombustvel.datasource.PostoManager
 import com.example.comparacombustvel.datasource.PostoRepository
-import kotlinx.coroutines.launch
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,15 +67,21 @@ fun Rentavel(
     val repository = remember { PostoRepository(context) }
     val isEditing = postoId != null && postoId != "new"
 
-    // --- Estados da UI (Refatorados) ---
+    // --- Cliente de Localização ---
+    val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
+
+    // --- Estados da UI ---
     var alcool by rememberSaveable { mutableStateOf("") }
     var gasolina by rememberSaveable { mutableStateOf("") }
     var posto by rememberSaveable { mutableStateOf("") }
+
+    // --- Localização ---
     var localizacao by rememberSaveable { mutableStateOf("") }
+
     var textResultCalculo by rememberSaveable { mutableStateOf("") }
     var showRentabilidade by rememberSaveable { mutableStateOf(false) }
 
-    // --- Estados de Erro (Refatorados) ---
+    // --- Estados de Erro ---
     var alcoolError by rememberSaveable { mutableStateOf<String?>(null) }
     var gasolinaError by rememberSaveable { mutableStateOf<String?>(null) }
     var postoError by rememberSaveable { mutableStateOf<String?>(null) }
@@ -81,6 +91,24 @@ fun Rentavel(
     val sharedPreferences = remember { context.getSharedPreferences("app_preferencias", Context.MODE_PRIVATE) }
     var checked by rememberSaveable {
         mutableStateOf(sharedPreferences.getBoolean(key_switch_state, true))
+    }
+
+    // --- Função para capturar GPS ---
+    fun captureLocationSilent() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        ) {
+            try {
+                fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, CancellationTokenSource().token)
+                    .addOnSuccessListener { location: Location? ->
+                        if (location != null) {
+                            localizacao = "${location.latitude}, ${location.longitude}"
+                        }
+                    }
+            } catch (e: Exception) {
+
+            }
+        }
     }
 
     fun verificacaoAlcoolGasolina(): Boolean {
@@ -113,6 +141,7 @@ fun Rentavel(
         return !hasError
     }
 
+    // --- Lógica de Inicialização ---
     LaunchedEffect(postoId) {
         if (isEditing) {
             val existingPosto = repository.getPostoById(postoId!!)
@@ -123,6 +152,8 @@ fun Rentavel(
                 localizacao = existingPosto.localizacao ?: ""
                 checked = existingPosto.porcentagemCalculo == 75
             }
+        } else {
+            captureLocationSilent()
         }
     }
 
@@ -156,7 +187,7 @@ fun Rentavel(
                 label = { Text(text = "Preço do Álcool (R$)") },
                 modifier = Modifier.fillMaxWidth().padding(20.dp, 30.dp, 20.dp, 5.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                isError = alcoolError != null // Atualizado
+                isError = alcoolError != null
             )
 
             if (alcoolError != null) {
@@ -191,7 +222,7 @@ fun Rentavel(
                 onValueChange = { posto = it },
                 label = { Text(text = "Posto (Opcional para calculo)") },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp),
-                isError = postoError != null // Atualizado
+                isError = postoError != null
             )
 
             if (postoError != null) {

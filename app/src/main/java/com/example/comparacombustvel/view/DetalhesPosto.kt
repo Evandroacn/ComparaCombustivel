@@ -30,12 +30,9 @@ fun DetalhesPosto(
 ) {
     val context = LocalContext.current
     val repository = remember { PostoRepository(context) }
-    // Escopo da Coroutine para a caixa de diálogo
     val scope = rememberCoroutineScope()
-    // Estado para controlar a visibilidade da caixa de diálogo de exclusão
     var showDeleteDialog by remember { mutableStateOf(false) }
 
-    // Carrega os detalhes do posto usando o ID
     val postoState = produceState<Posto?>(initialValue = null, postoId) {
         value = postoId?.let { repository.getPostoById(it) }
     }
@@ -79,7 +76,6 @@ fun DetalhesPosto(
             )
         }
     ) { paddingValues ->
-        // Se o posto ainda não carregou ou não foi encontrado
         if (posto == null) {
             Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
                 if (postoId == null) {
@@ -94,35 +90,38 @@ fun DetalhesPosto(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Text("Nome: ${posto.nome}", fontWeight = FontWeight.Bold, fontSize = 22.sp)
-                Divider() // Linha divisória
+                Divider()
                 Text("Álcool: R$ ${posto.precoAlcool}", fontSize = 18.sp)
                 Text("Gasolina: R$ ${posto.precoGasolina}", fontSize = 18.sp)
-                Text("Localização: ${posto.localizacao ?: "Não informada"}", fontSize = 16.sp)
+
                 Text("Cadastrado em: ${posto.dataFormatada()}", fontSize = 16.sp)
                 Text("Percentual Usado: ${posto.porcentagemCalculo}%", fontSize = 16.sp)
                 Text("Rentabilidade: $rentabilidadeTexto", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
 
                 Spacer(modifier = Modifier.height(10.dp))
 
+                val temLocalizacao = !posto.localizacao.isNullOrBlank()
+
                 Button(
                     onClick = {
-                        val location = posto.localizacao
-                        if (!location.isNullOrBlank()) {
+                        if (temLocalizacao) {
                             try {
-                                val gmmIntentUri = Uri.parse("geo:0,0?q=${Uri.encode(location)}")
+                                val gmmIntentUri = Uri.parse("geo:0,0?q=${Uri.encode(posto.localizacao)}")
                                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                                 mapIntent.setPackage("com.google.android.apps.maps")
                                 context.startActivity(mapIntent)
                             } catch (e: Exception) {
-                                println("Erro ao abrir mapa: ${e.message}")
+                                val gmmIntentUri = Uri.parse("geo:0,0?q=${Uri.encode(posto.localizacao)}")
+                                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                                context.startActivity(mapIntent)
                             }
                         }
                     },
-                    enabled = !posto.localizacao.isNullOrBlank(),
+                    enabled = temLocalizacao,
                     modifier = Modifier.fillMaxWidth().padding(0.dp, 10.dp, 0.dp, 5.dp).height(70.dp)
                 ) {
                     Text(
-                        "Abrir Mapa",
+                        if (temLocalizacao) "Abrir Mapa" else "Mapa Indisponível",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                     )
@@ -154,7 +153,6 @@ fun DetalhesPosto(
                 }
             }
 
-            // Caixa de Diálogo de Confirmação de Exclusão
             if (showDeleteDialog) {
                 AlertDialog(
                     onDismissRequest = { showDeleteDialog = false },
